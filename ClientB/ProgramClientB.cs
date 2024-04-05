@@ -1,4 +1,5 @@
 ﻿using GameLib;
+using System.Net.Sockets;
 
 namespace ClientB
 {
@@ -6,9 +7,27 @@ namespace ClientB
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to ClientB!");
+            using (SocketClient clientB = new SocketClient(new ConnectIPEndP().getIpeP()))
+            {
+                Console.WriteLine($"clientB connect to {clientB.RemoteEndPoint}");
 
-            Console.Read();
+                try
+                {
+
+                }
+                catch (SocketException se)
+                {
+                    Console.WriteLine($"{se.ErrorCode} - {se.Message}");
+
+                }
+                finally
+                {
+                    clientB.Close();
+                    Console.WriteLine($"clientB stop");
+                }
+            }
+
+            Console.Read();            
         }
     }
 }
