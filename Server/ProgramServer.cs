@@ -13,7 +13,10 @@ namespace ClientA
             {
 
                 if (Extensions.getClient(server, out Socket? clientA)) { Console.WriteLine($"server connect clientA {clientA?.RemoteEndPoint}"); }                
-                if (Extensions.getClient(server, out Socket? clientB)) { Console.WriteLine($"server connect clientB {clientB?.RemoteEndPoint}"); }                
+                if (Extensions.getClient(server, out Socket? clientB)) { Console.WriteLine($"server connect clientB {clientB?.RemoteEndPoint}"); }
+
+                UserPlayerA? playerA = null;
+                UserPlayerA? playerB = null;
 
                 try
                 {

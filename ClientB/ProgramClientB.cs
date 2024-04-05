@@ -11,9 +11,12 @@ namespace ClientB
             {
                 Console.WriteLine($"clientB connect to {clientB.RemoteEndPoint}");
 
+                UserPlayerA playerB = new UserPlayerA("Mare");
+                GameField field = new GameField();
+
                 try
                 {
-
+                    field.showField();
                 }
                 catch (SocketException se)
                 {
