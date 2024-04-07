@@ -1,5 +1,7 @@
 ﻿using GameLib;
 using System.Net.Sockets;
+using System.Text;
+using System.Text.Json;
 
 namespace ClientA
 {
@@ -17,9 +19,20 @@ namespace ClientA
 
                 UserPlayerA? playerA = null;
                 UserPlayerA? playerB = null;
+                string msg = string.Empty;
 
                 try
                 {
+                    while (true)
+                    {
+                        msg = Extensions.getMsg(clientA);
+                        Extensions.sendMsg(clientB, msg);
+                        msg = Extensions.getMsg(clientB);
+                        Extensions.sendMsg(clientA, msg);
+                    }
+
+                    //playerA = Extensions.getMsgPlayerA(clientA);
+                    //playerA.status = "update";
 
                 }
                 catch (SocketException se)
@@ -28,13 +41,12 @@ namespace ClientA
                 }
                 finally
                 {
+                    Console.Read();
                     clientA?.Close();
                     clientB?.Close();
                     Console.WriteLine("Server Stop!");
                 }
             }
-
-            Console.Read();
         }
     }
 }

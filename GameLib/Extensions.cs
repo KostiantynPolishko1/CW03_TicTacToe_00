@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Runtime.Serialization;
 
 namespace GameLib
 {
@@ -69,6 +71,38 @@ namespace GameLib
             Console.WriteLine(msg);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static byte[] sizeBytes(int size) => BitConverter.GetBytes(size);
+
+        public static UserPlayerA? getMsgPlayerA(Socket? client)
+        {
+            byte[] byteSize = new byte[4];
+            client?.Receive(byteSize);
+
+            byte[] dataPlayer = new byte[BitConverter.ToInt32(byteSize)];
+            client?.Receive(dataPlayer);
+
+            Utf8JsonReader utf8Reader = new Utf8JsonReader(dataPlayer);
+            return JsonSerializer.Deserialize<UserPlayerA>(ref utf8Reader);
+        }
+
+        public static void sendMsg(Socket? socket, in string? clientMsg = default)
+        {
+            if (clientMsg != null) { socket?.Send(Encoding.Unicode.GetBytes(clientMsg)); }
+            else 
+            {
+                Console.Write($"enter msg: ");
+                socket?.Send(Encoding.Unicode.GetBytes(Console.ReadLine()));
+            }
+        }
+
+        public static string getMsg(Socket? socket)
+        {
+            byte[] bytesMsg =  new byte[1024];
+            int bytesRead = socket.Receive(bytesMsg);
+
+            return Encoding.Unicode.GetString(bytesMsg, 0, bytesRead);
         }
     }
 }

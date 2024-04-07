@@ -1,5 +1,6 @@
 ﻿using GameLib;
 using System.Net.Sockets;
+using System.Text.Json;
 
 namespace ClientA
 {
@@ -13,10 +14,27 @@ namespace ClientA
 
                 UserPlayerA playerA = new UserPlayerA("Kopo");
                 GameField field = new GameField();
-
+                
                 try
                 {
-                    Extensions.setPosPlayer(field, playerA);
+                    while (true) 
+                    { 
+                        Extensions.sendMsg(clientA, null);
+                        Console.WriteLine($"answerB: {Extensions.getMsg(clientA)}");
+                    }
+
+                    //while (true)
+                    //{
+                    //    Extensions.setPosPlayer(field, playerA);
+                    //    byte[] buffer = JsonSerializer.SerializeToUtf8Bytes(playerA);
+                    //
+                    //    clientA.Send(Extensions.sizeBytes(Buffer.ByteLength(buffer)));
+                    //    clientA.Send(buffer);
+                    //
+                    //    clientA.Receive(bytes);
+                    //}
+
+
                 }
                 catch (SocketException se)
                 {
@@ -24,12 +42,11 @@ namespace ClientA
                 }
                 finally
                 {
+                    Console.Read();
                     clientA.Close();
                     Console.WriteLine($"clientA stop");
                 }
-            }
-
-            Console.Read();            
+            }                
         }
     }
 }

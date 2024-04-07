@@ -14,11 +14,13 @@ namespace ClientB
                 UserPlayerA playerB = new UserPlayerA("Mare");
                 GameField field = new GameField();
 
-                field.showField();
-
                 try
                 {
-                    
+                    while (true)
+                    {
+                        Console.WriteLine($"answerA: {Extensions.getMsg(clientB)}");
+                        Extensions.sendMsg(clientB, null);
+                    }
                 }
                 catch (SocketException se)
                 {
@@ -27,12 +29,11 @@ namespace ClientB
                 }
                 finally
                 {
+                    Console.Read();
                     clientB.Close();
                     Console.WriteLine($"clientB stop");
                 }
-            }
-
-            Console.Read();            
+            }         
         }
     }
 }
