@@ -11,15 +11,28 @@ namespace ClientB
             {
                 Console.WriteLine($"clientB connect to {clientB.RemoteEndPoint}");
 
-                UserPlayerA playerB = new UserPlayerA("Mare");
-                GameField field = new GameField();
+                UserPlayerA? playerA = null;
+                UserPlayerB? playerB = new UserPlayerB("Mare");
+                GameField gameField = new GameField();
 
                 try
                 {
+                    gameField.showField();
+
                     while (true)
-                    {
-                        Console.WriteLine($"answerA: {Extensions.getMsg(clientB)}");
-                        Extensions.sendMsg(clientB, null);
+                    {                      
+                        Console.WriteLine("wait answer clientA");
+                        playerA = Extensions.getPlayerA(clientB);
+                        Console.Clear();
+
+                        gameField.showField();
+                        Console.WriteLine($"answer {playerA?.userName}: x{playerA?.pointX} - y{playerA?.pointY}");
+
+                        Extensions.setPosPlayer(playerB);
+                        Console.Clear();    
+                        gameField.showField();
+
+                        Extensions.sentPlayerBtoA(clientB, playerB);
                     }
                 }
                 catch (SocketException se)

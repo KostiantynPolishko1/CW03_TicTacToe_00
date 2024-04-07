@@ -18,21 +18,17 @@ namespace ClientA
                 if (Extensions.getClient(server, out Socket? clientB)) { Console.WriteLine($"server connect clientB {clientB?.RemoteEndPoint}"); }
 
                 UserPlayerA? playerA = null;
-                UserPlayerA? playerB = null;
-                string msg = string.Empty;
+                UserPlayerB? playerB = null;                
 
                 try
                 {
                     while (true)
                     {
-                        msg = Extensions.getMsg(clientA);
-                        Extensions.sendMsg(clientB, msg);
-                        msg = Extensions.getMsg(clientB);
-                        Extensions.sendMsg(clientA, msg);
+                        playerA = Extensions.getPlayerA(clientA);
+                        Extensions.sentPlayerAtoB(clientB, playerA);
+                        playerB = Extensions.getPlayerB(clientB);
+                        Extensions.sentPlayerBtoA(clientA, playerB);
                     }
-
-                    //playerA = Extensions.getMsgPlayerA(clientA);
-                    //playerA.status = "update";
 
                 }
                 catch (SocketException se)

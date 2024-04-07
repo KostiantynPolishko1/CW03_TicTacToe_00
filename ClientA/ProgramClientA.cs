@@ -1,5 +1,6 @@
 ﻿using GameLib;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 namespace ClientA
@@ -12,29 +13,29 @@ namespace ClientA
             {
                 Console.WriteLine($"clientA connect to {clientA.RemoteEndPoint}");
 
-                UserPlayerA playerA = new UserPlayerA("Kopo");
-                GameField field = new GameField();
+                UserPlayerA? playerA = new UserPlayerA("Kopo");
+                UserPlayerB? playerB = null;
+                GameField gameField = new GameField();
                 
                 try
                 {
-                    while (true) 
-                    { 
-                        Extensions.sendMsg(clientA, null);
-                        Console.WriteLine($"answerB: {Extensions.getMsg(clientA)}");
+                    gameField.showField();
+
+                    while (true)
+                    {                      
+                        Extensions.setPosPlayer(playerA);
+                        Console.Clear();
+                        gameField.showField();
+
+                        Extensions.sentPlayerAtoB(clientA, playerA);
+
+                        Console.WriteLine("wait answer clientB");
+                        playerB = Extensions.getPlayerB(clientA);
+                        Console.Clear();
+
+                        gameField.showField();
+                        Console.WriteLine($"answer {playerB?.userName}: x{playerB?.pointX} - y{playerB?.pointY}");
                     }
-
-                    //while (true)
-                    //{
-                    //    Extensions.setPosPlayer(field, playerA);
-                    //    byte[] buffer = JsonSerializer.SerializeToUtf8Bytes(playerA);
-                    //
-                    //    clientA.Send(Extensions.sizeBytes(Buffer.ByteLength(buffer)));
-                    //    clientA.Send(buffer);
-                    //
-                    //    clientA.Receive(bytes);
-                    //}
-
-
                 }
                 catch (SocketException se)
                 {

@@ -36,23 +36,22 @@ namespace GameLib
             }            
         }
 
-        public static void setPosPlayer(GameField game, Player player)
+        public static void setPosPlayer(Player? player)
         {
 
             for(int i = 0; i != fieldData?.Count;)
-            {
-                game.showField();
-                Console.Write($"{player.userName} enter in {fieldData?.Keys.ToArray()[i]} {0} : {fieldData?.Values.ToArray()[i]-1}: ");
+            {               
+                Console.Write($"{player?.userName} enter in {fieldData?.Keys.ToArray()[i]} {0} : {fieldData?.Values.ToArray()[i]-1}: ");
                 if (!int.TryParse(Console.ReadLine(), out int pos)) 
                 {
-                    Console.Clear();
+                    //Console.Clear();
                     msgError("!Value is not digit!");
                     continue; 
                 }
 
                 if(Math.Abs(pos) >= fieldData?.Values.ToArray()[i])
                 {
-                    Console.Clear();
+                    //Console.Clear();
                     msgError($"!Value is out {fieldData?.Keys.ToArray()[i]} {0} : {fieldData?.Values.ToArray()[i] - 1}!");
                     continue;
                 }
@@ -60,7 +59,6 @@ namespace GameLib
                 if (i == 0) { player.pointX = Math.Abs(pos); }
                 else { player.pointY = Math.Abs(pos); }
                 i++;
-                Console.Clear();
             }
         }
 
@@ -75,7 +73,7 @@ namespace GameLib
 
         public static byte[] sizeBytes(int size) => BitConverter.GetBytes(size);
 
-        public static UserPlayerA? getMsgPlayerA(Socket? client)
+        public static UserPlayerA? getPlayerA(Socket? client)
         {
             byte[] byteSize = new byte[4];
             client?.Receive(byteSize);
@@ -85,6 +83,31 @@ namespace GameLib
 
             Utf8JsonReader utf8Reader = new Utf8JsonReader(dataPlayer);
             return JsonSerializer.Deserialize<UserPlayerA>(ref utf8Reader);
+        }
+
+        public static UserPlayerB? getPlayerB(Socket? client)
+        {
+            byte[] byteSize = new byte[4];
+            client?.Receive(byteSize);
+
+            byte[] dataPlayer = new byte[BitConverter.ToInt32(byteSize)];
+            client?.Receive(dataPlayer);
+
+            Utf8JsonReader utf8Reader = new Utf8JsonReader(dataPlayer);
+            return JsonSerializer.Deserialize<UserPlayerB>(ref utf8Reader);
+        }
+
+        public static void sentPlayerAtoB(Socket? client, UserPlayerA? playerA)
+        {
+            byte[] buffer = JsonSerializer.SerializeToUtf8Bytes(playerA);
+            client?.Send(sizeBytes(Buffer.ByteLength(buffer)));
+            client?.Send(buffer);
+        }
+        public static void sentPlayerBtoA(Socket? client, UserPlayerB? playerB)
+        {
+            byte[] buffer = JsonSerializer.SerializeToUtf8Bytes(playerB);
+            client?.Send(sizeBytes(Buffer.ByteLength(buffer)));
+            client?.Send(buffer);
         }
 
         public static void sendMsg(Socket? socket, in string? clientMsg = default)
