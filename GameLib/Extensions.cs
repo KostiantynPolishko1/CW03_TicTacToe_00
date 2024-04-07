@@ -97,15 +97,9 @@ namespace GameLib
             return JsonSerializer.Deserialize<UserPlayerB>(ref utf8Reader);
         }
 
-        public static void sentPlayerAtoB(Socket? client, UserPlayerA? playerA)
+        public static void sentPlayer(Socket? client, Player? player)
         {
-            byte[] buffer = JsonSerializer.SerializeToUtf8Bytes(playerA);
-            client?.Send(sizeBytes(Buffer.ByteLength(buffer)));
-            client?.Send(buffer);
-        }
-        public static void sentPlayerBtoA(Socket? client, UserPlayerB? playerB)
-        {
-            byte[] buffer = JsonSerializer.SerializeToUtf8Bytes(playerB);
+            byte[] buffer = JsonSerializer.SerializeToUtf8Bytes(player);
             client?.Send(sizeBytes(Buffer.ByteLength(buffer)));
             client?.Send(buffer);
         }

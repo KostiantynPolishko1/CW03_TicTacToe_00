@@ -11,8 +11,11 @@ namespace ClientB
             {
                 Console.WriteLine($"clientB connect to {clientB.RemoteEndPoint}");
 
-                UserPlayerA? playerA = null;
+                UserPlayerA? playerA = Extensions.getPlayerA(clientB);
+
                 UserPlayerB? playerB = new UserPlayerB("Mare");
+                Extensions.sentPlayer(clientB, playerB);
+
                 GameField gameField = new GameField();
 
                 try
@@ -21,7 +24,7 @@ namespace ClientB
 
                     while (true)
                     {                      
-                        Console.WriteLine("wait answer clientA");
+                        Console.WriteLine($"wait answer {playerA?.userName}");
                         playerA = Extensions.getPlayerA(clientB);
                         Console.Clear();
 
@@ -32,7 +35,7 @@ namespace ClientB
                         Console.Clear();    
                         gameField.showField();
 
-                        Extensions.sentPlayerBtoA(clientB, playerB);
+                        Extensions.sentPlayer(clientB, playerB);
                     }
                 }
                 catch (SocketException se)

@@ -17,17 +17,20 @@ namespace ClientA
                 if (Extensions.getClient(server, out Socket? clientA)) { Console.WriteLine($"server connect clientA {clientA?.RemoteEndPoint}"); }                
                 if (Extensions.getClient(server, out Socket? clientB)) { Console.WriteLine($"server connect clientB {clientB?.RemoteEndPoint}"); }
 
-                UserPlayerA? playerA = null;
-                UserPlayerB? playerB = null;                
+                UserPlayerA? playerA = Extensions.getPlayerA(clientA);
+                Extensions.sentPlayer(clientB, playerA);
+
+                UserPlayerB? playerB = Extensions.getPlayerB(clientB);
+                Extensions.sentPlayer(clientA, playerB);
 
                 try
                 {
                     while (true)
                     {
                         playerA = Extensions.getPlayerA(clientA);
-                        Extensions.sentPlayerAtoB(clientB, playerA);
+                        Extensions.sentPlayer(clientB, playerA);
                         playerB = Extensions.getPlayerB(clientB);
-                        Extensions.sentPlayerBtoA(clientA, playerB);
+                        Extensions.sentPlayer(clientA, playerB);
                     }
 
                 }

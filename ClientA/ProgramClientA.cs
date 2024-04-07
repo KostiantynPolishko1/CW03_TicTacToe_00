@@ -14,7 +14,9 @@ namespace ClientA
                 Console.WriteLine($"clientA connect to {clientA.RemoteEndPoint}");
 
                 UserPlayerA? playerA = new UserPlayerA("Kopo");
-                UserPlayerB? playerB = null;
+                Extensions.sentPlayer(clientA, playerA);
+
+                UserPlayerB? playerB = Extensions.getPlayerB(clientA);
                 GameField gameField = new GameField();
                 
                 try
@@ -27,9 +29,9 @@ namespace ClientA
                         Console.Clear();
                         gameField.showField();
 
-                        Extensions.sentPlayerAtoB(clientA, playerA);
+                        Extensions.sentPlayer(clientA, playerA);
 
-                        Console.WriteLine("wait answer clientB");
+                        Console.WriteLine($"wait answer {playerB?.userName}");
                         playerB = Extensions.getPlayerB(clientA);
                         Console.Clear();
 
