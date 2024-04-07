@@ -23,13 +23,36 @@ namespace ClientA
                 UserPlayerB? playerB = Extensions.getPlayerB(clientB);
                 Extensions.sentPlayer(clientA, playerB);
 
+                GameField gameField = new GameField();
+
                 try
                 {
                     while (true)
                     {
-                        playerA = Extensions.getPlayerA(clientA);
+                        while (true)
+                        {
+                            playerA = Extensions.getPlayerA(clientA);
+
+                            server.checkField(gameField, playerA);
+                            Extensions.sentPlayer(clientA, playerA);
+
+                            if(playerA?.status == "error") { continue; }
+                            break;
+                        }
+
                         Extensions.sentPlayer(clientB, playerA);
-                        playerB = Extensions.getPlayerB(clientB);
+
+                        while (true)
+                        {
+                            playerB = Extensions.getPlayerB(clientB);
+
+                            server.checkField(gameField, playerB);
+                            Extensions.sentPlayer(clientB, playerB);
+
+                            if(playerB?.status == "error") { continue; }                            
+                            break;
+                        }
+
                         Extensions.sentPlayer(clientA, playerB);
                     }
 

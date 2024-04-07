@@ -12,5 +12,10 @@ namespace GameLib
             this.Bind(ipEndP);
             this.Listen();
         }
+
+        public void checkField(GameField gameField, Player? player)
+        {
+
+        }
     }
 }

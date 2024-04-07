@@ -24,19 +24,52 @@ namespace ClientA
                     gameField.showField();
 
                     while (true)
-                    {                      
-                        Extensions.setPosPlayer(playerA);
-                        Console.Clear();
+                    {   
+                        while(true)
+                        {
+                            Extensions.setPosPlayer(playerA);
+                            Console.Clear();
+                            gameField.showField();
+
+                            Extensions.sentPlayer(clientA, playerA);
+                            playerA = Extensions.getPlayerA(clientA);
+
+                            if (playerA?.status == "error") 
+                            { 
+                                Console.Clear();
+                                Console.WriteLine($"position {playerA?.pointX} - {playerA?.pointY} is occupied");
+                                gameField.showField();
+                                continue; 
+                            }
+
+                            gameField.field[playerA.pointX, playerA.pointY] = playerA.type;
+                            Console.Clear();
+                            break;
+                        }
+
                         gameField.showField();
 
-                        Extensions.sentPlayer(clientA, playerA);
+                        if(playerA?.status == "win")
+                        {
+                            Console.Clear();
+                            gameField.showField();
+                            Console.WriteLine($"client {clientA.RemoteEndPoint} you WIN!");
+                        }
 
                         Console.WriteLine($"wait answer {playerB?.userName}");
-                        playerB = Extensions.getPlayerB(clientA);
-                        Console.Clear();
 
+                        playerB = Extensions.getPlayerB(clientA);
+                        gameField.field[playerB.pointX, playerB.pointY] = playerB.type;
+
+                        Console.Clear();
                         gameField.showField();
                         Console.WriteLine($"answer {playerB?.userName}: x{playerB?.pointX} - y{playerB?.pointY}");
+
+                        if (playerB?.status == "win")
+                        {
+                            Console.WriteLine($"client {clientA.RemoteEndPoint} you GAME OVER!");
+                            break;
+                        }
                     }
                 }
                 catch (SocketException se)
@@ -46,8 +79,7 @@ namespace ClientA
                 finally
                 {
                     Console.Read();
-                    clientA.Close();
-                    Console.WriteLine($"clientA stop");
+                    clientA.Close();             
                 }
             }                
         }
