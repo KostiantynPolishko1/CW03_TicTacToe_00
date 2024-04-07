@@ -8,9 +8,9 @@ namespace GameLib
 {
     public class UserPlayerA : Player
     {
-        public char type { get; } = 'X';
-        public string userName { get; } = string.Empty;
-        public string status { get; set; } = string.Empty;
+        public override char type { get; set; } = 'X';
+        public override string userName { get; set; } = string.Empty;
+        public override string status { get; set; } = string.Empty;
 
         public UserPlayerA() : base(5) { }
 

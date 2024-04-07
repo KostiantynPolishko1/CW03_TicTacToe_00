@@ -8,13 +8,16 @@ namespace GameLib
 {
     public class GameField
     {
-        public int row { get; } = 3;
-        public int col { get; } = 3;
+        public static int row { get; }
+        public static int col { get; }
         public char cell { get; } = '-';
         private char vdivider { get; set; } = '|';
         private char hdivider { get; set; } = '-';
 
         public char[,]? field {  get; set; } = null;
+
+        static GameField() => row = col = 3;
+
         public GameField() 
         { 
             field = new char[row, col];

@@ -14,9 +14,11 @@ namespace ClientB
                 UserPlayerA playerB = new UserPlayerA("Mare");
                 GameField field = new GameField();
 
+                field.showField();
+
                 try
                 {
-                    field.showField();
+                    
                 }
                 catch (SocketException se)
                 {

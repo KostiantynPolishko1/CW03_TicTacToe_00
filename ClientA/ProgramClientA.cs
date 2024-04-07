@@ -16,7 +16,7 @@ namespace ClientA
 
                 try
                 {
-                    field.showField();
+                    Extensions.setPosPlayer(field, playerA);
                 }
                 catch (SocketException se)
                 {
