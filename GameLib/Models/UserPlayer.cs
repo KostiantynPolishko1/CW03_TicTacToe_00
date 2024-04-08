@@ -23,10 +23,16 @@ namespace GameLib.Models
 
         public UserPlayer() : base() { }
 
-        public UserPlayer(char type, string? userName) : base()
+        public UserPlayer(char type) : base()
         {
             this.type = type;
-            this.userName = userName??= this.userName;
+        }
+
+        public void setUserName(char type)
+        {
+            Console.Write($"player {type} enter your name: ");
+            this.userName = Console.ReadLine();
+            Console.Clear();
         }
 
         public void setPosPlayer()

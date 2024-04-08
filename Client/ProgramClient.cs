@@ -14,16 +14,21 @@ namespace Client
             {
                 Console.WriteLine($"client connect to server {client.RemoteEndPoint}");
 
-                (char type, string? userName) = client.getPlayerData();
-                UserPlayer player = new UserPlayer(type, userName) {};
-                GameField? gameField = null;
+                UserPlayer? player = Extensions.getPlayer(client);
+                player?.setUserName(player.type);
+                Extensions.sentPlayer(client, player);
+
+                GameField? gameField = Extensions.getGameField(client);
+                gameField?.showField();
+
+                Console.WriteLine($"Your name: {player?.userName} | You play {player?.type}");
 
                 while (true)
                 {
                     Extensions.sentPlayer(client, player);
                     gameField = Extensions.getGameField(client);
 
-                    gameField.showField();
+                    gameField?.showField();
                     Console.Read();
                 }               
             }

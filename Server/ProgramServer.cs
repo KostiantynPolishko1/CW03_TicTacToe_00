@@ -18,19 +18,28 @@ namespace ClientA
                 const int SIZE = 2;
                 GameField gameField = new GameField();
                 List<Socket?> clients = new List<Socket?>(SIZE);
-                List<UserPlayer?> players = new List<UserPlayer?>(SIZE);
 
                 server.fillClients(SIZE, clients);
+
                 foreach (var client in clients) { Console.WriteLine($"server connect client {client?.RemoteEndPoint}"); }
+                List<UserPlayer?> players = new List<UserPlayer?>() { new UserPlayer('X'), new UserPlayer('O') };
+
+                for (int i = 0; i != SIZE; i++) 
+                { 
+                    Extensions.sentPlayer(clients[i], players[i]);
+                    players[i] = Extensions.getPlayer(clients[i]);
+                    Extensions.sentGameField(clients[i], gameField);
+                }
 
                 try
                 {
                     while (true)
                     {
-                        for (int i = 0; i != SIZE; i++) { players.Add(Extensions.getPlayer(clients[i])); }
-                        foreach (var item in players) { Console.WriteLine($"{item?.userName} - {item?.type}"); }
-
-                        for (int i = 0; i != SIZE; i++) { Extensions.sentGameField(clients[i], gameField); }
+                        for(int i = 0; i != SIZE; i++)
+                        {
+                            players[i] = Extensions.getPlayer(clients[i]);
+                            Extensions.sentGameField(clients[i], gameField);
+                        }
                     }
                 }
                 catch (SocketException se)

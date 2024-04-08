@@ -11,16 +11,5 @@ namespace GameLib
         {
             this.Connect(ipEndP);
         }
-
-        public (char, string?) getPlayerData()
-        {
-            Console.Write("enter player name: ");
-            string? userName = Console.ReadLine();
-
-            Console.Write("select type X | O: ");
-            char type = Console.ReadKey().KeyChar;
-
-            return (type, userName);
-        }
     }
 }
