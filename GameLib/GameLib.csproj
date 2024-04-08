@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Models\UserPlayerA.cs" />
+    <Compile Remove="Models\UserPlayerB.cs" />
+  </ItemGroup>
+
 </Project>

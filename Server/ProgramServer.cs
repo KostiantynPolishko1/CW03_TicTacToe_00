@@ -1,4 +1,6 @@
 ﻿using GameLib;
+using GameLib.Models;
+using System.Drawing;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
@@ -9,37 +11,37 @@ namespace ClientA
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Server!");
+            Console.WriteLine("Welcome to Server!");            
 
-            using(SocketServer server = new SocketServer(new ConnectIPEndP().getIpeP()))
+            using (SocketServer server = new SocketServer(new ConnectIPEndP().getIpeP()))
             {
+                const int SIZE = 2;
+                GameField gameField = new GameField();
+                List<Socket?> clients = new List<Socket?>(SIZE);
+                List<UserPlayer?> players = new List<UserPlayer?>(SIZE);
 
-                if (Extensions.getClient(server, out Socket? clientA)) { Console.WriteLine($"server connect clientA {clientA?.RemoteEndPoint}"); }                
-                if (Extensions.getClient(server, out Socket? clientB)) { Console.WriteLine($"server connect clientB {clientB?.RemoteEndPoint}"); }
-
-                UserPlayerA? playerA = null;
-                UserPlayerB? playerB = null;                
+                server.fillClients(SIZE, clients);
+                foreach (var client in clients) { Console.WriteLine($"server connect client {client?.RemoteEndPoint}"); }
 
                 try
                 {
                     while (true)
                     {
-                        playerA = Extensions.getPlayerA(clientA);
-                        Extensions.sentPlayerAtoB(clientB, playerA);
-                        playerB = Extensions.getPlayerB(clientB);
-                        Extensions.sentPlayerBtoA(clientA, playerB);
-                    }
+                        for (int i = 0; i != SIZE; i++) { players.Add(Extensions.getPlayer(clients[i])); }
+                        foreach (var item in players) { Console.WriteLine($"{item?.userName} - {item?.type}"); }
 
+                        for (int i = 0; i != SIZE; i++) { Extensions.sentGameField(clients[i], gameField); }
+                    }
                 }
                 catch (SocketException se)
                 {
                     Console.WriteLine($"{se.ErrorCode} - {se.Message}");
+                    Console.Read();
                 }
                 finally
                 {
                     Console.Read();
-                    clientA?.Close();
-                    clientB?.Close();
+                    foreach (var client in clients) { client?.Close(); }
                     Console.WriteLine("Server Stop!");
                 }
             }

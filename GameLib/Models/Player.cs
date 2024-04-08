@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameLib
+namespace GameLib.Models
 {
-    public abstract class Player
+    public class Player
     {
         public int pointX { get; set; } = default;
         public int pointY { get; set; } = default;
         public int stepGame { get; set; } = default;
-        public abstract char type { get; set; }
-        public abstract string userName { get; set; }
-        public abstract string status { get; set; }
 
         public Player() { }
         public Player(int stepGame) => this.stepGame = stepGame;
