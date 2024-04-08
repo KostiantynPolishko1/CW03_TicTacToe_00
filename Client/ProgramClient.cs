@@ -31,9 +31,22 @@ namespace Client
                         Console.Clear();
                         gameField?.showField();
 
-                        player?.setPosPlayer();
-                        Console.Clear();
-                        Extensions.sentPlayer(client, player);
+                        while (true)
+                        {
+                            player?.setPosPlayer();
+                            Console.Clear();
+
+                            Extensions.sentPlayer(client, player);
+                            gameField = Extensions.getGameField(client);
+
+                            if(gameField?.status == "error")
+                            {
+                                Console.WriteLine($"{player?.pointX}-{player?.pointY} is occupied");
+                                gameField.showField();
+                                continue;
+                            }
+                            break;
+                        }
 
                         gameField = Extensions.getGameField(client);
                         gameField?.showField();

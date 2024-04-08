@@ -40,8 +40,21 @@ namespace ClientA
                                 Extensions.sentGameField(clients[j], gameField);
                             }
 
-                            players[i] = Extensions.getPlayer(clients[i]);
-                            gameField.setCellPlayer(players[i]);
+                            while (true)
+                            {
+                                players[i] = Extensions.getPlayer(clients[i]);
+                                gameField?.checkCellPlayer(players[i]);
+                                Extensions.sentGameField(clients[i], gameField);
+                                
+                                if (gameField?.status == "error")
+                                {
+                                    continue;
+                                }
+
+                                break;
+                            }
+
+                            gameField?.setCellPlayer(players[i]);
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +62,12 @@ namespace GameLib.Models
                 for (int i = 0; i != count; i++) { hline += hdivider; }
                 return hline;
             }
+        }
+
+        public void checkCellPlayer(UserPlayer? player)
+        {
+            if (field[3 * player.pointX + player.pointY] == '-') { this.status = "update"; }
+            else { this.status = "error"; }
         }
 
         public void setCellPlayer(UserPlayer? player)
