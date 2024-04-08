@@ -13,24 +13,43 @@ namespace Client
             using (SocketClient client = new SocketClient(new ConnectIPEndP().getIpeP()))
             {
                 Console.WriteLine($"client connect to server {client.RemoteEndPoint}");
+                UserPlayer? player = null;
+                GameField? gameField = null;
 
-                UserPlayer? player = Extensions.getPlayer(client);
-                player?.setUserName(player.type);
-                Extensions.sentPlayer(client, player);
-
-                GameField? gameField = Extensions.getGameField(client);
-                gameField?.showField();
-
-                Console.WriteLine($"Your name: {player?.userName} | You play {player?.type}");
-
-                while (true)
+                try
                 {
-                    Extensions.sentPlayer(client, player);
-                    gameField = Extensions.getGameField(client);
+                    player = Extensions.getPlayer(client);
 
-                    gameField?.showField();
+                    Console.Write($"player {player?.type} enter your name: ");
+                    player?.setUserName();
+
+                    Console.WriteLine($"Your name: {player?.userName} | You play {player?.type}");
+
+                    while (true)
+                    {
+                        gameField = Extensions.getGameField(client);
+                        Console.Clear();
+                        gameField?.showField();
+
+                        player?.setPosPlayer();
+                        Console.Clear();
+                        Extensions.sentPlayer(client, player);
+
+                        gameField = Extensions.getGameField(client);
+                        gameField?.showField();
+                    }
+                }
+                catch (SocketException se)
+                {
+                    Console.WriteLine($"{se.ErrorCode} - {se.Message}");
                     Console.Read();
-                }               
+                }
+                finally
+                {
+                    Console.Read();
+                    client?.Close();
+                    Console.WriteLine($"client | player {player?.userName}  Stop!");
+                }             
             }
         }
     }

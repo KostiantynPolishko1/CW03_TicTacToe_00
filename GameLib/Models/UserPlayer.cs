@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,9 +29,8 @@ namespace GameLib.Models
             this.type = type;
         }
 
-        public void setUserName(char type)
-        {
-            Console.Write($"player {type} enter your name: ");
+        public void setUserName()
+        {           
             this.userName = Console.ReadLine();
             Console.Clear();
         }
@@ -40,6 +40,8 @@ namespace GameLib.Models
 
             for (int i = 0; i != fieldData?.Count;)
             {
+                Console.Write($"{this.userName} enter in {fieldData?.Keys.ToArray()[i]} {0} : {fieldData?.Values.ToArray()[i] - 1}: ");
+
                 if (!int.TryParse(Console.ReadLine(), out int pos))
                 {
                     msgError("!Value is not digit!");

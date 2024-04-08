@@ -62,5 +62,10 @@ namespace GameLib.Models
                 return hline;
             }
         }
+
+        public void setCellPlayer(UserPlayer? player)
+        {           
+            field[ 3 * player.pointX + player.pointY] = player.type;
+        }
     }
 }
