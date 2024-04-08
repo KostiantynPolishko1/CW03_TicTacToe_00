@@ -39,17 +39,17 @@ namespace Client
                             Extensions.sentPlayer(client, player);
                             gameField = Extensions.getGameField(client);
 
-                            if(gameField?.status == "error")
+                            if (gameField?.status == "error")
                             {
                                 Console.WriteLine($"{player?.pointX}-{player?.pointY} is occupied");
                                 gameField.showField();
                                 continue;
                             }
+                            gameField?.showField();
                             break;
                         }
 
-                        gameField = Extensions.getGameField(client);
-                        gameField?.showField();
+                        Console.WriteLine("wait answer of your oponent");
                     }
                 }
                 catch (SocketException se)

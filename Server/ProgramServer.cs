@@ -31,30 +31,28 @@ namespace ClientA
                         Extensions.sentPlayer(clients[i], players[i]);
                     }
 
+                    Extensions.sentGameField(clients[0], gameField);
+
                     while (true)
                     {
                         for(int i = 0; i != SIZE; i++)
                         {
-                            for(int j = 0; j != SIZE; j++)
-                            {
-                                Extensions.sentGameField(clients[j], gameField);
-                            }
-
                             while (true)
                             {
                                 players[i] = Extensions.getPlayer(clients[i]);
                                 gameField?.checkCellPlayer(players[i]);
-                                Extensions.sentGameField(clients[i], gameField);
-                                
-                                if (gameField?.status == "error")
-                                {
-                                    continue;
-                                }
 
+                                if (gameField?.status == "error") 
+                                { 
+                                    Extensions.sentGameField(clients[i], gameField);
+                                    continue; 
+                                }
+                                gameField?.setCellPlayer(players[i]);
+                                Extensions.sentGameField(clients[i], gameField);
                                 break;
                             }
 
-                            gameField?.setCellPlayer(players[i]);
+                            Extensions.sentGameField(clients[(i + 1) % 2], gameField);
                         }
                     }
                 }
